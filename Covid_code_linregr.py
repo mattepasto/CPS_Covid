@@ -11,15 +11,15 @@ from sklearn.metrics import max_error
 import math
 
 # importazione dati
-data = pd.read_csv("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-andamento-nazionale/dpc-covid19-ita-andamento-nazionale.csv")
-print (data.columns)
+data = pd.read_csv(r'C:\Users\matte\Documents\Covid_Machine_Learning\datasets\dpc-covid19-ita-andamento-nazionale.csv')
+# print (data.columns)
 
 data['diff_deceduti'] = data['deceduti'].diff()     # differenza con giorno prima (metodo diff non ha parametri quindi per default passo è 1)
 data['diff_tamponi'] = data['tamponi'].diff()
 dates = data['data']
 date_format = [pd.to_datetime(d) for d in dates]
 
-variable = 'nuovi_positivi'
+variable = 'nuovi_positivi'     # è una delle colonne del file csv
 fig, ax = plt.subplots(figsize=(12, 5))
 ax.grid()
 ax.scatter(date_format,data[variable])
@@ -31,7 +31,7 @@ plt.show()
 
 # prima correzione ad anomalie dovute a weekend, "levigando la curva"
 rolling_average_days = 7
-data['nuovi_positivi_moving'] = data['nuovi_positivi'].rolling(window=rolling_average_days).mean()
+data['nuovi_positivi_moving'] = data['nuovi_positivi'].rolling(window=rolling_average_days).mean()  # rolling è di pandas e lavora con dataframe
 variable = 'nuovi_positivi_moving'
 fig, ax = plt.subplots(figsize=(12, 5))
 ax.grid()
@@ -76,6 +76,7 @@ date_form = DateFormatter("%d-%m")
 ax.xaxis.set_major_formatter(date_form)
 ax.xaxis.set_major_locator(mdates.DayLocator(interval = 3))
 plt.show()
+
 variable = 'diff_deceduti'
 fig, ax = plt.subplots(figsize=(12, 5))
 ax.grid()
@@ -103,8 +104,8 @@ plt.show()
 # prepare the lists for the model
 X = date_format
 y = data['gravi_deceduti'].tolist()[1:]
-# date format is not suitable for modeling, let's transform the date into incrementals number starting from April 1st
-starting_date = 37  # April 1st is the 37th day of the series
+# per la modellazione, coverto date in numeri incrementali
+starting_date = 37  # il primo aprile è il 37° giorno della serie
 day_numbers = []
 for i in range(1, len(X)):
     day_numbers.append([i])
@@ -116,13 +117,13 @@ y = y[starting_date:]
 linear_regr = linear_model.LinearRegression()
 # Train the model using the training sets
 linear_regr.fit(X, y)
-print ("Linear Regression Model Score: %s" % (linear_regr.score(X, y)))     # se prendo dati fino a fine aprile score circa 98%! Ma c'è stato incremento dunque regressione ne subisce le conseguenze; al 3 settembre score del 67%...
+print ("Linear Regression Model Score: %s" % (linear_regr.score(X, y)))
 
 # Predict future trend
 y_pred = linear_regr.predict(X)
 error = max_error(y, y_pred)
 X_test = []
-future_days = 60    # predico prossimi 2 mesi
+future_days = 60    # predico prossimo mese in questo caso maggio
 for i in range(starting_date, starting_date + future_days):
     X_test.append([i])
 y_pred_linear = linear_regr.predict(X_test)
@@ -137,7 +138,7 @@ date_zero = datetime.strptime(data['data'][starting_date], '%Y-%m-%dT%H:%M:%S')
 # creating x_ticks for making the plot more appealing
 date_prev = []
 x_ticks = []
-step = 5
+step = 3    # vedo progressi giorno dopo giorno
 data_curr = date_zero
 x_current = starting_date
 n = int(future_days / step)

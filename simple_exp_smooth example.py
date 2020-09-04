@@ -29,7 +29,7 @@ ax=oildata.plot()
 ax.set_xlabel("Year")
 ax.set_ylabel("Oil (millions of tonnes)")
 print("Figure 7.1: Oil production in Saudi Arabia from 1996 to 2007.")
-
+plt.show()
 fit1 = SimpleExpSmoothing(oildata, initialization_method="heuristic").fit(smoothing_level=0.2,optimized=False)
 fcast1 = fit1.predict(3).rename(r'$\alpha=0.2$')    # forecast non andava
 fit2 = SimpleExpSmoothing(oildata, initialization_method="heuristic").fit(smoothing_level=0.6,optimized=False)

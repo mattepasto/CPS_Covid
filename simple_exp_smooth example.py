@@ -31,11 +31,11 @@ ax.set_ylabel("Oil (millions of tonnes)")
 print("Figure 7.1: Oil production in Saudi Arabia from 1996 to 2007.")
 plt.show()
 fit1 = SimpleExpSmoothing(oildata, initialization_method="heuristic").fit(smoothing_level=0.2,optimized=False)
-fcast1 = fit1.predict(3).rename(r'$\alpha=0.2$')    # forecast non andava
+fcast1 = fit1.forecast(3).rename(r'$\alpha=0.2$')    # forecast non andava ma alla fine sì in esempio con covid
 fit2 = SimpleExpSmoothing(oildata, initialization_method="heuristic").fit(smoothing_level=0.6,optimized=False)
-fcast2 = fit2.predict(3).rename(r'$\alpha=0.6$')
+fcast2 = fit2.forecast(3).rename(r'$\alpha=0.6$')
 fit3 = SimpleExpSmoothing(oildata, initialization_method="estimated").fit()
-fcast3 = fit3.predict(3).rename(r'$\alpha=%s$'%fit3.model.params['smoothing_level'])
+fcast3 = fit3.forecast(3).rename(r'$\alpha=%s$'%fit3.model.params['smoothing_level'])
 
 plt.figure(figsize=(12, 8))
 plt.plot(oildata, marker='o', color='black')

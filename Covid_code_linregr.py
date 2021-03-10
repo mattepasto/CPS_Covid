@@ -161,5 +161,5 @@ plt.xlabel('Days')
 plt.xlim(starting_date, starting_date + future_days)
 plt.xticks(x_ticks, date_prev)
 plt.ylabel('gravi_deceduti')
-plt.yscale("log")
+plt.yscale("log")   # log o linear; più bello log ma entrambi vanno a zero il 18 Maggio
 plt.show()

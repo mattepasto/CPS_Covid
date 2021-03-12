@@ -14,7 +14,7 @@ size = int(len(X)*0.8)
 X_train, X_test = X[0:size], X[size:len(X)]
 
 # ARIMA model
-darlt = sarima.SARIMAX(X_train, order=(1,1,3),trend='t').fit(disp=-1)
+darlt = sarima.SARIMAX(X_train, order=(1,1,3),trend='t').fit(disp=-1)	# valori scelti da noi, DA MIGLIORARE; 't' = lineare; disp < 0 = non fa visualizzare output
 darlf = darlt.forecast(steps=len(X_test))
 
 # plot
@@ -25,7 +25,7 @@ ax.plot(asse_x,X_train, label='X_train')
 ax.plot(asse_x2,X_test, label='X_test')
 ax.plot(asse_x2,darlf, label='darlf')
 plt.legend(loc='upper left')
-plt.title('Prova')
+plt.title('SARIMAX')
 plt.ylabel('nuovi_positivi')
 plt.xlabel('Data')
 plt.xticks([0,5,10,15,20,25,30,35,40,45,50,55,60],

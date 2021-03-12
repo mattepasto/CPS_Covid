@@ -27,11 +27,12 @@ ax.set(xlabel="Date",ylabel=variable,title=variable)
 date_form = DateFormatter("%d-%m")
 ax.xaxis.set_major_formatter(date_form)
 ax.xaxis.set_major_locator(mdates.DayLocator(interval = 3))
-plt.show()
+plt.title('Nuovi positivi')
+plt.show()  # stampo semplicemente nuovi pos
 
 # prima correzione ad anomalie dovute a weekend, "levigando la curva"
 rolling_average_days = 7
-data['nuovi_positivi_moving'] = data['nuovi_positivi'].rolling(window=rolling_average_days).mean()  # rolling è di pandas e lavora con dataframe
+data['nuovi_positivi_moving'] = data['nuovi_positivi'].rolling(window=rolling_average_days).mean()  # rolling è di pandas e lavora con dataframe. Dò stesso peso a tutti i dati
 variable = 'nuovi_positivi_moving'
 fig, ax = plt.subplots(figsize=(12, 5))
 ax.grid()
@@ -40,6 +41,7 @@ ax.set(xlabel="Date",ylabel=variable,title=variable)
 date_form = DateFormatter("%d-%m")
 ax.xaxis.set_major_formatter(date_form)
 ax.xaxis.set_major_locator(mdates.DayLocator(interval = 3))
+plt.title('Nuovi positivi levigato')
 plt.show()
 
 # ma i tamponi? notiamo che numero contagiati è strettamente collegato a numero tamponi fatti
@@ -52,6 +54,7 @@ ax.set(xlabel="Date",ylabel=variable,title=variable)
 date_form = DateFormatter("%d-%m")
 ax.xaxis.set_major_formatter(date_form)
 ax.xaxis.set_major_locator(mdates.DayLocator(interval = 3))
+plt.title('Numero tamponi levigato')
 plt.show()
 
 # allora vediamo la percentuale di positivi in base a numero di test
@@ -64,6 +67,7 @@ ax.set(xlabel="Date",ylabel=variable,title=variable)
 date_form = DateFormatter("%d-%m")
 ax.xaxis.set_major_formatter(date_form)
 ax.xaxis.set_major_locator(mdates.DayLocator(interval = 3))
+plt.title('Percentuale positivi (n° pos / n° tamponi)')
 plt.show()      # percentuale risolve problema delle fluttazioni dei weekend e pesa il numero dei test
 
 # vediamo grafico terapie intensive e differenza deceduti: il secondo tra questi è quello più 'grezzo'
@@ -75,6 +79,7 @@ ax.set(xlabel="Date",ylabel=variable,title=variable)
 date_form = DateFormatter("%d-%m")
 ax.xaxis.set_major_formatter(date_form)
 ax.xaxis.set_major_locator(mdates.DayLocator(interval = 3))
+plt.title('Terapie intensive occupate')
 plt.show()
 
 variable = 'diff_deceduti'
@@ -85,6 +90,7 @@ ax.set(xlabel="Date",ylabel=variable,title=variable)
 date_form = DateFormatter("%d-%m")
 ax.xaxis.set_major_formatter(date_form)
 ax.xaxis.set_major_locator(mdates.DayLocator(interval = 3))
+plt.title('Morti giornalieri')
 plt.show()
 
 # mettiamo insieme le terapie intensive con i morti: l'insieme di questi dati ci dà la certezza di non avere errori di acquisizione (ovvero è meno proponso a una forte fluttuazione come il numero di tamponi o contagi)
@@ -98,6 +104,7 @@ date_form = DateFormatter("%d-%m")
 ax.xaxis.set_major_formatter(date_form)
 ax.xaxis.set_major_locator(mdates.DayLocator(interval = 3))
 ax.axvline(datetime(2020, 4, 1), c="green", zorder=0)   # picco
+plt.title('Numero persone gravi + deceduti')
 plt.show()
 
 # ora uso regressione lineare su terapie + morti
@@ -162,4 +169,5 @@ plt.xlim(starting_date, starting_date + future_days)
 plt.xticks(x_ticks, date_prev)
 plt.ylabel('gravi_deceduti')
 plt.yscale("log")   # log o linear; più bello log ma entrambi vanno a zero il 18 Maggio
+plt.title('Predizione decessi e casi gravi')
 plt.show()

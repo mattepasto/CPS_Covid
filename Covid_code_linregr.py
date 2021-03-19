@@ -58,7 +58,7 @@ plt.title('Numero tamponi levigato')
 plt.show()
 
 # allora vediamo la percentuale di positivi in base a numero di test
-data['perc_positive'] = ((data['nuovi_positivi_moving'])/(data['diff_tamponi_moving'])*100)
+data['perc_positive'] = ((data['nuovi_positivi'])/(data['diff_tamponi'])*100)
 variable = 'perc_positive'
 fig, ax = plt.subplots(figsize=(12, 5))
 ax.grid()
@@ -68,6 +68,19 @@ date_form = DateFormatter("%d-%m")
 ax.xaxis.set_major_formatter(date_form)
 ax.xaxis.set_major_locator(mdates.DayLocator(interval = 3))
 plt.title('Percentuale positivi (n° pos / n° tamponi)')
+plt.show()
+
+# allora vediamo la percentuale di positivi in base a numero di test
+data['perc_positive_moving'] = ((data['nuovi_positivi_moving'])/(data['diff_tamponi_moving'])*100)
+variable = 'perc_positive_moving'
+fig, ax = plt.subplots(figsize=(12, 5))
+ax.grid()
+ax.scatter(date_format,data[variable])
+ax.set(xlabel="Date",ylabel=variable,title=variable)
+date_form = DateFormatter("%d-%m")
+ax.xaxis.set_major_formatter(date_form)
+ax.xaxis.set_major_locator(mdates.DayLocator(interval = 3))
+plt.title('Percentuale positivi levigato(n° pos / n° tamponi)')
 plt.show()      # percentuale risolve problema delle fluttazioni dei weekend e pesa il numero dei test
 
 # vediamo grafico terapie intensive e differenza deceduti: il secondo tra questi è quello più 'grezzo'

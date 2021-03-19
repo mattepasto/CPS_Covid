@@ -6,7 +6,7 @@ from statsmodels.tsa.api import ExponentialSmoothing, SimpleExpSmoothing, Holt
 from matplotlib.dates import DateFormatter
 import matplotlib.dates as mdates
 
-data = pd.read_csv (r'C:\Users\matte\Documents\Covid_Machine_Learning\datasets\dpc-covid19-ita-andamento-nazionale.csv')
+data = pd.read_csv (r'C:\Users\matte\Documents\Covid_Machine_Learning\datasets\andamento-nazionale-completo.csv')
 #print(data)
 giorni = data['data']
 ti = data['terapia_intensiva']
@@ -84,8 +84,9 @@ line2, = plt.plot(fcast2, marker='o', color='red')
 plt.plot(fit3.fittedvalues, marker='o', color='green')
 line3, = plt.plot(fcast3, marker='o', color='green')
 plt.legend([line1, line2, line3], [fcast1.name, fcast2.name, fcast3.name])
-plt.xticks([0,5,10,15,20,25,30,35,40,45,50,55,60],
- ["1 Mar", "6 Mar", "11 Mar", "16 Mar", "21 Mar", "26 Mar", "31 Mar", "5 Apr", "10 Apr", "15 Apr", "20 Apr", "25 Apr", "30 Apr"])
+plt.xticks([0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95],
+    ["24 Feb","1 Mar", "6 Mar", "11 Mar", "16 Mar", "21 Mar", "26 Mar", "31 Mar", "5 Apr", "10 Apr", "15 Apr", "20 Apr", "25 Apr", "30 Apr",
+    "5 Mag","10 Mag","15 Mag","20 Mag","25 Mag", "30 Mag"])
 plt.title('SingleExpSmoothing')
 #plt.show()      #04/09: ok fa robe: devo risolvere come mettere indici(probabilmente posso aggiungerlo in un metodo)
 
@@ -107,8 +108,9 @@ line_double2, = plt.plot(fcast_double2, marker='o', color='red')
 plt.plot(fit_double3.fittedvalues, marker='o', color='green')
 line_double3, = plt.plot(fcast_double3, marker='o', color='green')
 plt.legend([line_double1, line_double2, line_double3], [["alpha=%s, beta=%s", fit_double1.model.params['smoothing_level'], fit_double1.model.params['smoothing_trend']], ["alpha=%s, beta=%s", fit_double2.model.params['smoothing_level'], fit_double2.model.params['smoothing_trend']], ["alpha=%s, beta=%s", fit_double3.model.params['smoothing_level'], fit_double3.model.params['smoothing_trend']]])
-plt.xticks([0,5,10,15,20,25,30,35,40,45,50,55,60],
- ["1 Mar", "6 Mar", "11 Mar", "16 Mar", "21 Mar", "26 Mar", "31 Mar", "5 Apr", "10 Apr", "15 Apr", "20 Apr", "25 Apr", "30 Apr"])
+plt.xticks([0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95],
+    ["24 Feb","1 Mar", "6 Mar", "11 Mar", "16 Mar", "21 Mar", "26 Mar", "31 Mar", "5 Apr", "10 Apr", "15 Apr", "20 Apr", "25 Apr", "30 Apr",
+    "5 Mag","10 Mag","15 Mag","20 Mag","25 Mag", "30 Mag"])
 plt.title('DoubleExpSmoothing')
 #plt.show()
 
@@ -141,28 +143,28 @@ axs[0,0].plot(nuovi_pos, marker='o', color='black')
 axs[0,0].plot(fit_triple1.fittedvalues, marker='o', color='blue')
 axs[0,0].plot(fcast_triple1, marker='o', color='cyan')
 plt.sca(axs[0, 0])
-plt.xticks([0,10,20,30,40,50,60],["1 Mar", "11 Mar", "21 Mar", "31 Mar", "10 Apr", "20 Apr", "30 Apr"])
+plt.xticks([0,15,30,45,60,75,90],["24 Feb", "11 Mar", "26 Mar", "10 Apr", "25 Apr","10 Mag","25 Mag"])
 axs[0,0].set_title("add add")
 
 axs[0,1].plot(nuovi_pos, marker='o', color='black')
 axs[0,1].plot(fit_triple2.fittedvalues, marker='o', color='red')
 axs[0,1].plot(fcast_triple2, marker='o', color='cyan')
 plt.sca(axs[0, 1])
-plt.xticks([0,10,20,30,40,50,60],["1 Mar", "11 Mar", "21 Mar", "31 Mar", "10 Apr", "20 Apr", "30 Apr"])
+plt.xticks([0,15,30,45,60,75,90],["24 Feb", "11 Mar", "26 Mar", "10 Apr", "25 Apr","10 Mag","25 Mag"])
 axs[0,1].set_title("add mul")
 
 axs[1,0].plot(nuovi_pos, marker='o', color='black')
 axs[1,0].plot(fit_triple3.fittedvalues, marker='o', color='green')
 axs[1,0].plot(fcast_triple3, marker='o', color='cyan')
 plt.sca(axs[1, 0])
-plt.xticks([0,10,20,30,40,50,60],["1 Mar", "11 Mar", "21 Mar", "31 Mar", "10 Apr", "20 Apr", "30 Apr"])
+plt.xticks([0,15,30,45,60,75,90],["24 Feb", "11 Mar", "26 Mar", "10 Apr", "25 Apr","10 Mag","25 Mag"])
 axs[1,0].set_title("mul add")
 
 axs[1,1].plot(nuovi_pos, marker='o', color='black')
 axs[1,1].plot(fit_triple4.fittedvalues, marker='o', color='brown')
 axs[1,1].plot(fcast_triple4, marker='o', color='cyan')
 plt.sca(axs[1, 1])
-plt.xticks([0,10,20,30,40,50,60],["1 Mar", "11 Mar", "21 Mar", "31 Mar", "10 Apr", "20 Apr", "30 Apr"])
+plt.xticks([0,15,30,45,60,75,90],["24 Feb", "11 Mar", "26 Mar", "10 Apr", "25 Apr","10 Mag","25 Mag"])
 axs[1,1].set_title("mul mul")
 fig.suptitle('TripleExpSmoothing')
 plt.show()

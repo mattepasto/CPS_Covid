@@ -103,13 +103,14 @@ def sarima_eva(y,order,seasonal_order,seasonal_period,pred_date,y_to_test,y_trai
     plt.title('SARIMAX')
     plt.ylabel('nuovi_positivi')
     plt.xlabel('Data')
-    plt.xticks([0,5,10,15,20,25,30,35,40,45,50,55,60],
-    ["1 Mar", "6 Mar", "11 Mar", "16 Mar", "21 Mar", "26 Mar", "31 Mar", "5 Apr", "10 Apr", "15 Apr", "20 Apr", "25 Apr", "30 Apr"])
+    plt.xticks([0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95],
+    ["24 Feb","1 Mar", "6 Mar", "11 Mar", "16 Mar", "21 Mar", "26 Mar", "31 Mar", "5 Apr", "10 Apr", "15 Apr", "20 Apr", "25 Apr", "30 Apr",
+    "5 Mag","10 Mag","15 Mag","20 Mag","25 Mag", "30 Mag"])
     plt.show()
     return (results)
     
 
-series = pd.read_csv(r'C:\Users\matte\Documents\Covid_Machine_Learning\datasets\dpc-covid19-ita-andamento-nazionale.csv', index_col='data', parse_dates=True)
+series = pd.read_csv(r'C:\Users\matte\Documents\Covid_Machine_Learning\datasets\andamento-nazionale-completo.csv', index_col='data', parse_dates=True)
 X = series['nuovi_positivi'].values
 # X = X.asfreq('W')
 
@@ -117,16 +118,16 @@ size = int(len(X)*0.8)
 X_train, X_test = X[0:size], X[size:len(X)]
 # grid search per trovare i migliori parametri
 #sarima_grid_search(X_train,7)
-# plot with the best parameters -> The set of parameters with the minimum AIC is: SARIMA(0, 1, 1)x(0, 1, 1, 7) - AIC:482.1817392305457
-model = sarima_eva(X,(0, 1, 1),(0, 1, 1, 7),7,len(X_train+1),X_test,X_train)
+# plot with the best parameters -> The set of parameters with the minimum AIC is: SARIMA(0, 1, 1)x(1, 1, 1, 7) - AIC:933.6363644269596
+model = sarima_eva(X,(0, 1, 1),(1, 1, 1, 7),7,len(X_train+1),X_test,X_train)
 
 #proviamo con un test set piu grande
 size2 = int(len(X)*0.70)
 X_train2, X_test2 = X[0:size2], X[size2:len(X)]
 # grid search per trovare i migliori parametri
 #sarima_grid_search(X_train2,7)
-# plot with the best parameters -> The set of parameters with the minimum AIC is: SARIMA(0, 1, 1)x(0, 1, 1, 7) - AIC:389.97827553535694
-model = sarima_eva(X,(0, 1, 1),(0, 1, 1, 7),7,len(X_train2+1),X_test2,X_train2)
+# plot with the best parameters -> The set of parameters with the minimum AIC is: SARIMA(0, 1, 1)x(1, 1, 1, 7) - AIC:933.6363644269596
+model = sarima_eva(X,(0, 1, 1),(1, 1, 1, 7),7,len(X_train2+1),X_test2,X_train2)
 '''
 # training
 size = int(len(X)*0.8)

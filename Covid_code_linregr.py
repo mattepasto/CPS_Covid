@@ -11,7 +11,7 @@ from sklearn.metrics import max_error
 import math
 
 # importazione dati
-data = pd.read_csv(r'C:\Users\matte\Documents\Covid_Machine_Learning\datasets\dpc-covid19-ita-andamento-nazionale.csv')
+data = pd.read_csv(r'.\datasets\dpc-covid19-ita-andamento-nazionale.csv')
 # print (data.columns)
 
 data['diff_deceduti'] = data['deceduti'].diff()     # differenza con giorno prima (metodo diff non ha parametri quindi per default passo è 1)

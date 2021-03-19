@@ -6,7 +6,7 @@ from statsmodels.tsa.api import ExponentialSmoothing, SimpleExpSmoothing, Holt
 from matplotlib.dates import DateFormatter
 import matplotlib.dates as mdates
 
-data = pd.read_csv (r'C:\Users\matte\Documents\Covid_Machine_Learning\datasets\andamento-nazionale-completo.csv')
+data = pd.read_csv (r'.\datasets\andamento-nazionale-completo.csv')
 #print(data)
 giorni = data['data']
 ti = data['terapia_intensiva']
@@ -20,41 +20,6 @@ decessi = data['deceduti']
 tot_casi = data['totale_casi']
 tamponi = data['tamponi']
 
-"""
-plt.scatter(giorni, ti, color='black')
-plt.grid()
-plt.xlabel('Giorni')
-plt.ylabel('Terapie intensive')
-plt.xticks([0,5,10,15,20,25,30,35,40,45,50,55,60],
- ["1 Mar", "6 Mar", "11 Mar", "16 Mar", "21 Mar", "26 Mar", "31 Mar", "5 Apr", "10 Apr", "15 Apr", "20 Apr", "25 Apr", "30 Apr"])
-plt.show()
-
-plt.bar(giorni, nuovi_pos)
-plt.xticks([0,5,10,15,20,25,30,35,40,45,50,55,60],
- ["1 Mar", "6 Mar", "11 Mar", "16 Mar", "21 Mar", "26 Mar", "31 Mar", "5 Apr", "10 Apr", "15 Apr", "20 Apr", "25 Apr", "30 Apr"])
-plt.show()
-
-# data['nuovi_positivi'].plot(kind="hist", title='Nuovi positivi')
-# plt.show()
-
-plt.plot(giorni, var_pos)
-plt.grid()
-plt.xlabel('Giorni')
-plt.ylabel('Variazione del totale positivi')
-plt.xticks([0,5,10,15,20,25,30,35,40,45,50,55,60],
- ["1 Mar", "6 Mar", "11 Mar", "16 Mar", "21 Mar", "26 Mar", "31 Mar", "5 Apr", "10 Apr", "15 Apr", "20 Apr", "25 Apr", "30 Apr"])
-plt.show()
-"""
-
-# sto provando a fare la single exp smoothing su nuovi positivi (variabile 'nuovi_pos')
-"""
-index= pd.date_range(start='03/01/2020', end= '04/30/2020')
-nuovi_posdata= pd.Series(nuovi_pos,index)
-
-ax= nuovi_posdata.plot()
-ax.set_xlabel("Giorni")
-ax.set_ylabel("Nuovi positivi")
-"""
 date_format = [pd.to_datetime(d) for d in giorni]
 variable = 'nuovi_positivi'     # è una delle colonne del file csv
 fig, ax = plt.subplots(figsize=(12, 5))     # con subplots creo tupla che contiene oggetto figura e assi così ci posso lavorare come entità separate
@@ -88,7 +53,7 @@ plt.xticks([0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95],
     ["24 Feb","1 Mar", "6 Mar", "11 Mar", "16 Mar", "21 Mar", "26 Mar", "31 Mar", "5 Apr", "10 Apr", "15 Apr", "20 Apr", "25 Apr", "30 Apr",
     "5 Mag","10 Mag","15 Mag","20 Mag","25 Mag", "30 Mag"])
 plt.title('SingleExpSmoothing')
-#plt.show()      #04/09: ok fa robe: devo risolvere come mettere indici(probabilmente posso aggiungerlo in un metodo)
+#plt.show()
 
 # double exp smoothing
 
@@ -102,19 +67,19 @@ fcast_double3 = fit_double3.forecast(15)#.rename(r'$\alpha=%s, beta=%s$', fit_do
 plt.figure(figsize=(12, 8))
 plt.plot(nuovi_pos, marker='o', color='black')
 plt.plot(fit_double1.fittedvalues, marker='o', color='blue')
-line_double1, = plt.plot(fcast_double1, marker='o', color='blue')
+line_double1, = plt.plot(fcast_double1, marker='o', color='blue',label="alpha = %.2f, beta = %.2f" %(fit_double1.model.params['smoothing_level'], fit_double1.model.params['smoothing_trend']))
 plt.plot(fit_double2.fittedvalues, marker='o', color='red')
-line_double2, = plt.plot(fcast_double2, marker='o', color='red')
+line_double2, = plt.plot(fcast_double2, marker='o', color='red',label="alpha = %.2f, beta = %.2f" %(fit_double2.model.params['smoothing_level'], fit_double2.model.params['smoothing_trend']))
 plt.plot(fit_double3.fittedvalues, marker='o', color='green')
-line_double3, = plt.plot(fcast_double3, marker='o', color='green')
-plt.legend([line_double1, line_double2, line_double3], [["alpha=%s, beta=%s", fit_double1.model.params['smoothing_level'], fit_double1.model.params['smoothing_trend']], ["alpha=%s, beta=%s", fit_double2.model.params['smoothing_level'], fit_double2.model.params['smoothing_trend']], ["alpha=%s, beta=%s", fit_double3.model.params['smoothing_level'], fit_double3.model.params['smoothing_trend']]])
+line_double3, = plt.plot(fcast_double3, marker='o', color='green',label="alpha = %.2f, beta = %.2f" %(fit_double3.model.params['smoothing_level'], fit_double3.model.params['smoothing_trend']))
+plt.legend(handles=[line_double1, line_double2, line_double3])
 plt.xticks([0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95],
     ["24 Feb","1 Mar", "6 Mar", "11 Mar", "16 Mar", "21 Mar", "26 Mar", "31 Mar", "5 Apr", "10 Apr", "15 Apr", "20 Apr", "25 Apr", "30 Apr",
     "5 Mag","10 Mag","15 Mag","20 Mag","25 Mag", "30 Mag"])
 plt.title('DoubleExpSmoothing')
 #plt.show()
 
-# triple exp smoothing: abbiamo notato seasonalità perché nei weekend nuovi_pos minori perché fatti meno tamponi
+# triple exp smoothing: abbiamo notato stagionalità perché nei weekend nuovi_pos minori perché fatti meno tamponi
 
 size = int(len(nuovi_pos)*0.8)
 nuovi_pos_train=nuovi_pos[0:size]
@@ -168,28 +133,3 @@ plt.xticks([0,15,30,45,60,75,90],["24 Feb", "11 Mar", "26 Mar", "10 Apr", "25 Ap
 axs[1,1].set_title("mul mul")
 fig.suptitle('TripleExpSmoothing')
 plt.show()
-'''
-plt.figure(figsize=(12, 8))
-plt.plot(nuovi_pos, marker='o', color='black')
-plt.plot(fit_triple1.fittedvalues, marker='o', color='blue')
-line_triple1, = plt.plot(fcast_triple1, marker='o', color='blue')
-plt.plot(fit_triple2.fittedvalues, marker='o', color='red')
-line_triple2, = plt.plot(fcast_triple2, marker='o', color='red')
-plt.plot(fit_triple3.fittedvalues, marker='o', color='green')
-line_triple3, = plt.plot(fcast_triple3, marker='o', color='green')
-plt.plot(fit_triple4.fittedvalues, marker='o', color='brown')
-line_triple4, = plt.plot(fcast_triple4, marker='o', color='brown')
-plt.legend([line_triple1, line_triple2, line_triple3, line_triple4], [["alpha=%s, beta=%s", fit_triple1.model.params['smoothing_level'], fit_triple1.model.params['smoothing_trend']], ["alpha=%s, beta=%s", fit_triple2.model.params['smoothing_level'], fit_triple2.model.params['smoothing_trend']], ["alpha=%s, beta=%s", fit_triple3.model.params['smoothing_level'], fit_triple3.model.params['smoothing_trend']],["alpha=%s, beta=%s", fit_triple4.model.params['smoothing_level'], fit_triple4.model.params['smoothing_trend']]])
-plt.xticks([0,5,10,15,20,25,30,35,40,45,50,55,60],
- ["1 Mar", "6 Mar", "11 Mar", "16 Mar", "21 Mar", "26 Mar", "31 Mar", "5 Apr", "10 Apr", "15 Apr", "20 Apr", "25 Apr", "30 Apr"])
-plt.title('TripleExpSmoothing')
-plt.show()
-'''
-
-
-"""
-ti_index = pd.date_range(start='01/03/2020', end='30/04/2020')
-ti__data = pd.Series(ti, ti_index)
-fit1 = SimpleExpSmoothing(ti__data,initialization_method="heuristic").fit(smoothing_level=0.2,optimized=False)
-fcast1 = fit1.predict(3).rename(r'$\alpha=0.2$')    # come con altro file, non c'è come metodo forecast ma predict
-"""

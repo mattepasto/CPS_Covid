@@ -14,7 +14,7 @@ from sklearn.metrics import mean_squared_error
 import itertools
 
 #importazione dati
-data = pd.read_csv(r'C:\Users\matte\Documents\Covid_Machine_Learning\datasets\somministrazioni-vaccini.csv')
+data = pd.read_csv(r'.\datasets\somministrazioni-vaccini.csv')
 date_ordinate = []
 for i in pd.date_range(start="2020-12-27",end="2021-03-18",freq='D'):
     date_ordinate.append(i)
@@ -29,13 +29,13 @@ for i in pd.date_range(start="2020-12-27",end="2021-03-18",freq='D'):
 #print(data['data_somministrazione'][125])
 #print(data['data_somministrazione'][125]==str(date_ordinate[0]))
 
-pippo=0
+vaccine_index=0
 for i in pd.date_range(start="2020-12-27",end="2021-03-18",freq='D'):
     for j in range(len(data)):
         
         if(data['data_somministrazione'][j]==str(i)):
-            vaccini_ordinate[pippo]+=data['totale'][j]
-    pippo+=1
+            vaccini_ordinate[vaccine_index]+=data['totale'][j]
+    vaccine_index+=1
 print(vaccini_ordinate)
 
 #ora triple exp smoothing
@@ -148,18 +148,7 @@ def sarima_eva(y,order,seasonal_order,seasonal_period,pred_date,y_to_test,y_trai
     y_forecasted = pred.predicted_mean
     mse = ((y_forecasted - y_to_test) ** 2).mean()
     print('The Root Mean Squared Error of SARIMA with season_length={} and dynamic = False {}'.format(seasonal_period,round(np.sqrt(mse), 2)))
-    '''
-    ax = plt.plot(y, label='observed')  # modificato da ax = y.plot(label='observed')
-    plt.plot(y_forecasted, ax=ax, label='One-step ahead Forecast', alpha=.7, figsize=(14, 7))   # QUI ERRORE
-    ax.fill_between(pred_ci.index,
-                    pred_ci.iloc[:, 0],
-                    pred_ci.iloc[:, 1], color='k', alpha=.2)
 
-    ax.set_xlabel('Data')
-    ax.set_ylabel('nuovi_positivi')
-    plt.legend()
-    plt.show()
-    '''
     # (1) If we are forecasting x(T+1), x(T+2)... x(T+h), using information up to period T, 
     # we may have to do it recursively by using forecast of x(T+1) in order to forecast x(T+2) and so on.
     # (2) If we are forecasting x(T+1) using information up to time T, then forecasting x(T+2) using information up to period T+1 and so on, 
@@ -174,19 +163,7 @@ def sarima_eva(y,order,seasonal_order,seasonal_period,pred_date,y_to_test,y_trai
     y_forecasted_dynamic = pred_dynamic.predicted_mean
     mse_dynamic = ((y_forecasted_dynamic - y_to_test) ** 2).mean()
     print('The Root Mean Squared Error of SARIMA with season_length={} and dynamic = True {}'.format(seasonal_period,round(np.sqrt(mse_dynamic), 2)))
-    '''
-    ax = y.plot(label='observed')
-    y_forecasted_dynamic.plot(label='Dynamic Forecast', ax=ax,figsize=(14, 7))
-    ax.fill_between(pred_dynamic_ci.index,
-                    pred_dynamic_ci.iloc[:, 0],
-                    pred_dynamic_ci.iloc[:, 1], color='k', alpha=.2)
 
-    ax.set_xlabel('Data')
-    ax.set_ylabel('nuovi_positivi')
-
-    plt.legend()
-    plt.show()
-    '''
     # nostro plot
     fig, ax = plt.subplots()
     asse_x=np.arange(0,len(y_train),1)
@@ -214,7 +191,7 @@ X_train, X_test = X[0:size], X[size+1:len(X)]
 # plot with the best parameters -> The set of parameters with the minimum AIC is: SARIMA(0, 1, 1)x(0, 1, 1, 7) - AIC:1049.9572865410532
 model = sarima_eva(X,(0, 1, 1),(0, 1, 1, 7),7,len(X_train)+1,X_test,X_train)
 
-#proviamo con un test set piu grande
+#proviamo con un test set più grande
 size2 = int(len(X)*0.70)
 X_train2, X_test2 = X[0:size2], X[size2+1:len(X)]
 # grid search per trovare i migliori parametri

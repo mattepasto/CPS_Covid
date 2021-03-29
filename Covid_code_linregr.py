@@ -103,7 +103,7 @@ ax.set(xlabel="Date",ylabel=variable,title=variable)
 date_form = DateFormatter("%d-%m")
 ax.xaxis.set_major_formatter(date_form)
 ax.xaxis.set_major_locator(mdates.DayLocator(interval = 3))
-plt.title('Morti giornalieri')
+plt.title('Deceduti giornalieri')
 plt.show()
 
 # mettiamo insieme le terapie intensive con i morti: l'insieme di questi dati ci dà la certezza di non avere errori di acquisizione (ovvero è meno proponso a una forte fluttuazione come il numero di tamponi o contagi)

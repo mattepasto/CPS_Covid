@@ -28,7 +28,7 @@ ax.scatter(date_format,data[variable])
 ax.set(xlabel="Date",ylabel=variable,title=variable)
 date_form = DateFormatter("%d-%m")
 ax.xaxis.set_major_formatter(date_form)
-ax.xaxis.set_major_locator(mdates.DayLocator(interval = 3))
+ax.xaxis.set_major_locator(mdates.DayLocator(interval = 5))
 plt.title('nuovi_positivi')
 #plt.show()
 

@@ -51,7 +51,7 @@ line3, = plt.plot(fcast3, marker='o', color='green')
 plt.legend([line1, line2, line3], [fcast1.name, fcast2.name, fcast3.name])
 plt.xticks([0,5,10,15,20,25,30,35,40,45,50,55,60],
  ["1 Mar", "6 Mar", "11 Mar", "16 Mar", "21 Mar", "26 Mar", "31 Mar", "5 Apr", "10 Apr", "15 Apr", "20 Apr", "25 Apr", "30 Apr"])
-plt.title('SingleExpSmoothing')
+plt.title('SimpleExpSmoothing')
 #plt.show()
 
 # double exp smoothing

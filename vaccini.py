@@ -191,7 +191,7 @@ X_train, X_test = X[0:size], X[size+1:len(X)]
 # plot with the best parameters -> The set of parameters with the minimum AIC is: SARIMA(0, 1, 1)x(0, 1, 1, 7) - AIC:1049.9572865410532
 model = sarima_eva(X,(0, 1, 1),(0, 1, 1, 7),7,len(X_train)+1,X_test,X_train)
 
-#proviamo con un test set più grande
+#proviamo con un test set più piccolo
 size2 = int(len(X)*0.70)
 X_train2, X_test2 = X[0:size2], X[size2+1:len(X)]
 # grid search per trovare i migliori parametri
